@@ -1,6 +1,5 @@
 from dotenv import dotenv_values
 
-
 class Config:
     config = dotenv_values(".env")
 
