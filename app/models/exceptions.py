@@ -24,3 +24,15 @@ class MensajeNotFound(CustomException):
 
     def __init__(self, status_code=404, name="MensajeNotFound", description='No se encontro el mensaje'):
         super().__init__(status_code, name, description)
+        
+class UserNotFound(CustomException):
+    def __init__(self, description=''):
+        status_code = 404
+        name="User Found Error"
+        super().__init__(status_code, name, description)
+        
+class UserDataError(CustomException):
+    def __init__(self, description=''):
+        status_code = 400
+        name = "Invalid Data Error"
+        super().__init__(status_code, name, description)
