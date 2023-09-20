@@ -1,6 +1,5 @@
 from dotenv import dotenv_values
 
-
 class Config:
     config = dotenv_values(".env")
 
@@ -15,3 +14,5 @@ class Config:
 
     TEMPLATE_FOLDER = "templates/"
     STATIC_FOLDER = "static_folder/"
+
+    SERVIDOR_IMAGENES= STATIC_FOLDER + "servidor_imagenes/"
