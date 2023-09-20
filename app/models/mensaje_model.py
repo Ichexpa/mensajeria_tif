@@ -3,7 +3,6 @@ from ..database import DatabaseConnection
 class Mensaje:
 
     def __init__(self,**kwarg):
-        print(kwarg)
         self.id_mensaje=kwarg.get("id_mensaje")
         self.contenido=kwarg.get("contenido")
         self.id_usuario=kwarg.get("id_usuario")
@@ -50,8 +49,6 @@ class Mensaje:
             return False
         finally:
             DatabaseConnection.close_connection()
-
-
 """ diccionario={"id_mensaje":23,"contenido":"testConstructor","id_canal":{"id_canal":1,"nombre":"test"}}
 test = Mensaje(**diccionario)
 print(test) """
