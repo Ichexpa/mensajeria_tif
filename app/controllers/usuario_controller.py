@@ -71,3 +71,4 @@ class UsuarioController:
             Usuario.delete_usuario(usuario_result)
             return {"message":"El usuario ha sido eliminadi"},200
         raise UserDataError("Usuario no encontrado")
+    

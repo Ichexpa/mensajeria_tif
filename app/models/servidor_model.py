@@ -23,7 +23,6 @@ class Servidor:
         print(resultado)
         listado_servidores=[]
         if resultado:
-            print("entro")
             for servidor in resultado:
                 servidor_objeto=Servidor(id_servidor=servidor[0],
                                  nombre=servidor[1],
@@ -38,7 +37,7 @@ class Servidor:
             query = "INSERT INTO mensajeria_tif.servidores(nombre,descripcion) VALUE(%s,%s)"
             servidor = (servidor.nombre, servidor.descripcion)
         else:
-            query += "INSERT INTO mensajeria_tif.servidores(nombre,descripcion,imagen) VALUE(%s,%s,%s)"
+            query = "INSERT INTO mensajeria_tif.servidores(nombre,descripcion,imagen) VALUE(%s,%s,%s)"
             servidor = (servidor.nombre, servidor.descripcion, servidor.imagen)
 
         DatabaseConnection.execute_query(query,servidor)
