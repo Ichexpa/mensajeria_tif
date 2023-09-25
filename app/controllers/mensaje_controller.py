@@ -23,8 +23,12 @@ class MensajeController:
     def create_mensaje(cls):
         request_user=request.json
         mensaje=Mensaje(**request_user)
-        Mensaje.create_mensaje(mensaje)
-        return {"message":"mensaje creado exitosamente"},201
+        id_mensaje=Mensaje.create_mensaje(mensaje)
+        return {"message":"mensaje creado exitosamente",
+                "mensaje":{
+                            "id_mensaje": id_mensaje
+                          }
+                },201
     
     @classmethod
     def delete_mensaje(cls,id_mensaje):
@@ -42,3 +46,12 @@ class MensajeController:
         mensaje=Mensaje(id_mensaje=id_mensaje,**request.json)
         Mensaje.update_mensaje(mensaje)
         return {"message":"mensaje actualizado correctamente"},200
+    
+    @classmethod
+    def get_mensaje_x_id(cls,id_mensaje):
+        mensaje = Mensaje.get_mensaje_x_id(Mensaje(id_mensaje=id_mensaje))       
+        if(mensaje is None):
+            return {"message":"No se encontro el mensaje"},404
+        return mensaje.serializar(),200
+        
+        

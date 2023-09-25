@@ -40,7 +40,8 @@ class Servidor:
             query = "INSERT INTO mensajeria_tif.servidores(nombre,descripcion,imagen) VALUE(%s,%s,%s)"
             servidor = (servidor.nombre, servidor.descripcion, servidor.imagen)
 
-        DatabaseConnection.execute_query(query,servidor)
+        cursor=DatabaseConnection.execute_query(query,servidor)
+        return cursor.lastrowid
     
     @classmethod
     def get_servidor_Xid(cls,servidor):

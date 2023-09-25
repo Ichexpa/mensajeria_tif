@@ -10,8 +10,11 @@ class UsuarioServidorController:
         peticion=request.json
         usuario=Usuario(id_usuario=peticion.get("id_usuario"))
         servidor=Servidor(id_servidor=peticion.get("id_servidor"))
-        UsuarioServidor.ingresar_a_servidor(usuario,servidor)
-        return {"message": "El usuario ingreso de forma exitosa al servidor"},201
+        id_usuario_servidor=UsuarioServidor.ingresar_a_servidor(usuario,servidor)
+        return {"message": "El usuario ingreso de forma exitosa al servidor",
+                "usuario_servidor":{
+                    "id_usuario_servidor": id_usuario_servidor
+                }}, 201
     
     @classmethod
     def get_servidores_X_idUsuario(cls,id_usuario):
@@ -32,3 +35,16 @@ class UsuarioServidorController:
             return {"message":"se abandono el servidor de forma exitosa"},204
         
         return {"message":"ocurrio un error al abandonar el servidor"},505
+
+    @classmethod
+    def get_servidor_usuario_X_id(cls,id_usuario_servidor):
+        usuario_servidor=UsuarioServidor(id_usuario_servidor=id_usuario_servidor)
+        resultado=UsuarioServidor.get_servidor_usuario_X_id(usuario_servidor)
+        if resultado is not None:
+            return resultado.serializar(),200
+        return {"error":"No se encontro el usuario"},404
+"""     @classmethod
+    def crear_ingresar_y_
+    #CREO PRIMERO EL SERVIDOR Y DEVUEVLO EL ID CREADO
+    #CON ESE ID INGRESO AL SERVIDOR TOMANDO COMO REFERENCIA EL ID DEL SERVIDOR Y DEL USUARIO
+    #UNA VEZ CREADO DEVUELVO EN UN JSON UN OBJETO DE TIPO USUARIO_SERVIDOR SERIALIZADO """

@@ -48,8 +48,10 @@ class ServidorController:
                           descripcion=request.form.get("descripcion"),
                           imagen=nombre_imagen)
         print(servidor.imagen)
-        Servidor.create_servidor(servidor)
-        return {"message":"servidor creado correctamente"},201
+        id_servidor_creado=Servidor.create_servidor(servidor)
+        return {"message":"servidor creado correctamente","servidor":{
+            "id_servidor": id_servidor_creado
+        }},201
     
     @classmethod
     def get_servidor_Xid(cls,id_servidor):
