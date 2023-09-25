@@ -33,18 +33,47 @@ class Usuario:
     
     @classmethod
     def is_registered(cls,usuario):
-        query = "SELECT * FROM mensajeria_tif.usuarios WHERE nickname = %s AND constrasenia = %s;"
-        params = usuario.nickname,usuario.contrasenia,
+        query = "SELECT * FROM mensajeria_tif.usuarios WHERE (nickname = %s OR email = %s) AND constrasenia = %s;"
+        params = (usuario.nickname,usuario.email,usuario.contrasenia)
         result = DatabaseConnection.fetch_one(query,params=params)
         if result is not None:
-            return True
+            return Usuario(
+                id_usuario = result[0],
+                email = result[1],
+                contrasenia = result[2],
+                nombre = result[3],
+                apellido = result[4],
+                fecha_nac = str(result[5]),
+                avatar = result[6],
+                nickname = result[7]
+            )
         else:
-            return False
+            return None
+        
         
     @classmethod
     def get_usuario(cls,usuario):
-        query = "SELECT * FROM mensajeria_tif.usuarios WHERE nickname = %s"
-        params = usuario.nickname,
+        query = "SELECT * FROM mensajeria_tif.usuarios WHERE nickname = %s OR email = %s"
+        params = (usuario.nickname,usuario.email)
+        result = DatabaseConnection.fetch_one(query,params=params)
+        if result is not None:
+            return Usuario(
+                id_usuario = result[0],
+                email = result[1],
+                contrasenia = result[2],
+                nombre = result[3],
+                apellido = result[4],
+                fecha_nac = str(result[5]),
+                avatar = result[6],
+                nickname = result[7]
+            )
+        else:
+            return None
+        
+    @classmethod
+    def get_usuario_id(cls,usuario):
+        query = "SELECT * FROM mensajeria_tif.usuarios WHERE id_usuario = %s;"
+        params = (usuario.id_usuario,)
         result = DatabaseConnection.fetch_one(query,params=params)
         if result is not None:
             return Usuario(
