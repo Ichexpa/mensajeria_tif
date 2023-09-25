@@ -6,6 +6,8 @@ usuario_bp = Blueprint('usuario_bp', __name__)
 
 usuario_bp.route('/profile', methods=['GET'])(UsuarioController.show_usuario)
 
+usuario_bp.route('/<int:id_usuario>', methods=['GET'])(UsuarioController.get_usuario)
+
 usuario_bp.route('/login',methods=['POST'])(UsuarioController.login)
 
 usuario_bp.route('/logout',methods=['GET'])(UsuarioController.logout)

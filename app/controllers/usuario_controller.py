@@ -1,5 +1,5 @@
 from ..models.usuario_model import Usuario
-from ..models.exceptions import UserNotFound, UserDataError
+from ..models.exceptions import UserNotFound,UserDataError
 from flask import request, session
 class UsuarioController:
     
@@ -7,26 +7,39 @@ class UsuarioController:
     def login(cls):
         data = request.json
         usuario = Usuario(nickname = data.get("nickname"),
+                       email = data.get("email"),
                        contrasenia = data.get("contrasenia")
         )
-        
-        if Usuario.is_registered(usuario):
-            session['nickname'] = data.get("nickname")
+        usuario_registrado = Usuario.is_registered(usuario)
+        if usuario_registrado is not None:
+            session['nickname'] = usuario_registrado.nickname
+            session['email'] = usuario_registrado.email
             return {"message":"Sesión Iniciada"},200
-        
-        raise UserNotFound("Usuario o contraseña incorrectos")
+        else:
+            raise UserNotFound("Usuario o contraseña incorrectos")
         
     @classmethod
     def show_usuario(cls):
-        usuario_buscado = Usuario(nickname = session.get("nickname"))
+        usuario_buscado = Usuario(nickname = session.get("nickname"),email=session.get("email"))
         usuario_result = Usuario.get_usuario(usuario_buscado)
-        if usuario_result is not None:
-            return usuario_result.serialize(),200 
-        raise UserDataError("Usuario no encontrado.")
-    
+        if usuario_result is None:   
+            raise UserDataError("Usuario no encontrado.")
+        else:
+            return usuario_result.serialize(),200
+        
+    @classmethod
+    def get_usuario(cls,id_usuario):
+        usuario_buscado = Usuario(id_usuario = id_usuario)
+        usuario_result = Usuario.get_usuario_id(usuario_buscado)
+        if usuario_result is None:   
+            raise UserDataError("Usuario no encontrado.")
+        else:
+            return usuario_result.serialize(),200
+        
     @classmethod
     def logout(cls):
         session.pop('nickname',None)
+        session.pop('email',None)
         return {"message":"Sesión cerrada"},200
     
     @classmethod
