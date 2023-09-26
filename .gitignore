@@ -1,3 +1,5 @@
 .env
 __pycache__
 static_folder/servidor_imagenes/*
+static_folder/perfil_imagenes/*
+static_folder/front-mensajeria-tif
