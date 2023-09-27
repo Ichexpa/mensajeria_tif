@@ -70,3 +70,13 @@ class UsuarioServidor:
                                                      )
                                                     )
         return None
+    
+    @classmethod
+    def usuario_ya_esta_enServidor(cls,usuario_servidor):
+        query="SELECT * FROM mensajeria_tif.usuarios_servidores WHERE id_servidor=%s AND id_usuario=%s"
+        print(usuario_servidor.servidor)
+        parametros=Servidor(**usuario_servidor.servidor).id_servidor,usuario_servidor.id_usuario
+        resultado=DatabaseConnection.fetch_one(query,parametros)
+        if resultado is not None:
+            return True
+        return False

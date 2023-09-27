@@ -43,8 +43,13 @@ class UsuarioServidorController:
         if resultado is not None:
             return resultado.serializar(),200
         return {"error":"No se encontro el usuario"},404
-"""     @classmethod
-    def crear_ingresar_y_
-    #CREO PRIMERO EL SERVIDOR Y DEVUEVLO EL ID CREADO
-    #CON ESE ID INGRESO AL SERVIDOR TOMANDO COMO REFERENCIA EL ID DEL SERVIDOR Y DEL USUARIO
-    #UNA VEZ CREADO DEVUELVO EN UN JSON UN OBJETO DE TIPO USUARIO_SERVIDOR SERIALIZADO """
+    
+    @classmethod
+    def usuario_ya_esta_enServidor(cls):
+        id_usuario=request.args.get("id_usuario")
+        servidor={"id_servidor":request.args.get("id_servidor")}
+        usuario_servidor=UsuarioServidor(id_usuario=id_usuario,servidor=servidor)
+        existe_en_servidor=UsuarioServidor.usuario_ya_esta_enServidor(usuario_servidor)
+        if existe_en_servidor:
+            return {"estado": True},200
+        return {"estado": False},200
