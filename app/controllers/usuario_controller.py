@@ -62,9 +62,10 @@ class UsuarioController:
     @classmethod
     def update_usuario(cls):
         data = request.json
-        usuario_buscado = Usuario(nickname = session.get("nickname"))
+        usuario_buscado = Usuario(nickname = session.get("nickname"),email=session.get("email"))
         usuario_result = Usuario.get_usuario(usuario_buscado)
         if usuario_result is not None:
+            session["nickname"] = data.get("nickname")
             usuario_result.email = data.get("email")
             usuario_result.contrasenia = data.get("contrasenia")
             usuario_result.nombre = data.get("nombre")
@@ -74,7 +75,7 @@ class UsuarioController:
             usuario_result.nickname =data.get("nickname")
             Usuario.update_usuario(usuario_result)
             return {"message":"Usuario actualizado correctamente"},200
-        raise UserDataError("Usuario no encontrado")
+        raise UserDataError("No se pudo actualizar los datos del usuario")
     
     @classmethod
     def delete_usuario(cls):
