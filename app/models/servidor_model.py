@@ -40,7 +40,8 @@ class Servidor:
             query = "INSERT INTO mensajeria_tif.servidores(nombre,descripcion,imagen) VALUE(%s,%s,%s)"
             servidor = (servidor.nombre, servidor.descripcion, servidor.imagen)
 
-        DatabaseConnection.execute_query(query,servidor)
+        cursor=DatabaseConnection.execute_query(query,servidor)
+        return cursor.lastrowid
     
     @classmethod
     def get_servidor_Xid(cls,servidor):
@@ -55,3 +56,17 @@ class Servidor:
             return servidor
         return resultado
     
+    @classmethod
+    def get_servidor_Xnombre(cls,servidor):
+        query="SELECT * FROM mensajeria_tif.servidores WHERE nombre LIKE %s"
+        nombre_servidor="%"+servidor.nombre+"%",
+        resultados=DatabaseConnection.fetch_all(query,nombre_servidor)
+        listado_servidores=[]
+        if resultados:
+            for servidor in resultados:
+                listado_servidores.append(Servidor(id_servidor=servidor[0],
+                                                   nombre=servidor[1],
+                                                   descripcion=servidor[2],
+                                                   imagen=servidor[3]))
+            return listado_servidores
+        return None

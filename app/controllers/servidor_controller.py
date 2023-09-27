@@ -48,8 +48,10 @@ class ServidorController:
                           descripcion=request.form.get("descripcion"),
                           imagen=nombre_imagen)
         print(servidor.imagen)
-        Servidor.create_servidor(servidor)
-        return {"message":"servidor creado correctamente"},201
+        id_servidor_creado=Servidor.create_servidor(servidor)
+        return {"message":"servidor creado correctamente","servidor":{
+            "id_servidor": id_servidor_creado
+        }},201
     
     @classmethod
     def get_servidor_Xid(cls,id_servidor):
@@ -57,4 +59,15 @@ class ServidorController:
         if(resultado is None):
             #DESPUES IMPLEMENTAR EL ERROR
             return {"mensaje":"No se encontro el servidor"},404
-        return  resultado.serializar(),200
+        return  resultado.serializar(),200    
+        
+    @classmethod
+    def get_servidor_Xnombre(cls):
+        servidor=Servidor(nombre=request.args.get("nombre"))
+        listado_servidores=Servidor.get_servidor_Xnombre(servidor)
+        respuesta={"servidores":[]}
+        if(listado_servidores):
+            for servidor in listado_servidores:
+                respuesta["servidores"].append(servidor.serializar())
+        
+        return respuesta,200

@@ -19,10 +19,12 @@ class CanalController:
     @classmethod
     def create_canal(cls):
         peticion_canal=request.json
-        print(request.json)
         canal=Canal(**peticion_canal)
-        Canal.create_canal(canal)
-        return {"message": "canal creado correctamente"},201
+        id_canal=Canal.create_canal(canal)
+        return {"message": "canal creado correctamente",
+                "canal":{
+                    "id_canal": id_canal
+                }},201
     
     @classmethod
     def delete_canal(cls,id_canal):

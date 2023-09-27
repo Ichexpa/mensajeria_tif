@@ -17,8 +17,10 @@ class UsuarioServidor:
     def ingresar_a_servidor(cls,usuario,servidor):
         query = "INSERT INTO mensajeria_tif.usuarios_servidores(id_servidor,id_usuario) VALUE(%s,%s)"
         usuario_servidor = (servidor.id_servidor, usuario.id_usuario)
-        DatabaseConnection.execute_query(query,usuario_servidor)
+        cursor=DatabaseConnection.execute_query(query,usuario_servidor)
+        id_servidor_ingresado=cursor.lastrowid
         DatabaseConnection.close_connection()
+        return id_servidor_ingresado
 
     @classmethod
     def get_servidores_X_idUsuario(cls,usuario):
@@ -51,3 +53,30 @@ class UsuarioServidor:
             return False
         finally:
             DatabaseConnection.close_connection()
+    
+    @classmethod
+    def get_servidor_usuario_X_id(cls, usuario_servidor):
+        query = """SELECT us.id_usuario_servidor, us.id_servidor, s.nombre, s.descripcion, s.imagen
+                   FROM mensajeria_tif.usuarios_servidores us INNER JOIN mensajeria_tif.servidores
+                   s ON us.id_servidor = s.id_servidor WHERE us.id_usuario_servidor = %s """
+        parametros = usuario_servidor.id_usuario_servidor,
+        resultado=DatabaseConnection.fetch_one(query,parametros)
+        if resultado is not None:
+            return UsuarioServidor(id_usuario_servidor=resultado[0],
+                                   servidor=Servidor(id_servidor=resultado[1],
+                                                     nombre=resultado[2],
+                                                     descripcion=resultado[3],
+                                                     imagen=resultado[4]
+                                                     )
+                                                    )
+        return None
+    
+    @classmethod
+    def usuario_ya_esta_enServidor(cls,usuario_servidor):
+        query="SELECT * FROM mensajeria_tif.usuarios_servidores WHERE id_servidor=%s AND id_usuario=%s"
+        print(usuario_servidor.servidor)
+        parametros=Servidor(**usuario_servidor.servidor).id_servidor,usuario_servidor.id_usuario
+        resultado=DatabaseConnection.fetch_one(query,parametros)
+        if resultado is not None:
+            return True
+        return False

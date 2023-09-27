@@ -35,8 +35,10 @@ class Canal:
     def create_canal(cls,canal):
         query="INSERT INTO mensajeria_tif.canales(nombre,descripcion,id_servidor) VALUE(%s,%s,%s)"
         parametros=(canal.nombre,canal.descripcion,canal.id_servidor)
-        DatabaseConnection.execute_query(query,parametros)
+        cursor=DatabaseConnection.execute_query(query,parametros)
+        id_canal_creado=cursor.lastrowid
         DatabaseConnection.close_connection()
+        return id_canal_creado
         
     @classmethod
     def delete_canal(cls,canal):
