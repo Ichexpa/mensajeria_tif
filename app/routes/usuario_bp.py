@@ -17,3 +17,6 @@ usuario_bp.route('/register',methods=['POST'])(UsuarioController.registrar_usuar
 usuario_bp.route('/update',methods=['PUT'])(UsuarioController.update_usuario)
 
 usuario_bp.route('/delete',methods=['DELETE'])(UsuarioController.delete_usuario)
+
+""" usuario_bp.route('/update_avatar',methods=['POST'])(UsuarioController.actualizar_avatar) """
+#endoint sin funcionar
