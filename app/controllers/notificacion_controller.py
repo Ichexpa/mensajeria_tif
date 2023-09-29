@@ -1,3 +1,4 @@
+#MANEJA LOS EVENTOS DE NOTIFICACION
 # Importa las bibliotecas necesarias
 from flask import Flask, render_template, request, session
 from flask_socketio import SocketIO, emit, join_room, leave_room
