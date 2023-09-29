@@ -84,7 +84,11 @@ class UsuarioController:
     
     @classmethod
     def actualizar_avatar(cls):
-        ruta_avatar_imagenes="http://127.0.0.1:5000/assets/avatares/"
+        #rutabackend
+        ruta_avatar_imagenes=Config.USUARIO_AVATARES
+        #rutafrontend
+        ruta_frontend = "/assets/avatares/"
+        
         nombre_imagen=None
         usuario_sesion = Usuario(nickname = session.get("nickname"),email=session.get("email"))
         usuario = Usuario.get_usuario(usuario_sesion)
@@ -104,7 +108,7 @@ class UsuarioController:
                     profile_imagen.save(ruta_archivo)
                 else:
                     nombre_imagen=None
-                usuario_avatar = Usuario(avatar = ruta_archivo,id_usuario = usuario.id_usuario)
+                usuario_avatar = Usuario(avatar = f'{ruta_frontend}{nombre_imagen}',id_usuario = usuario.id_usuario)
                 Usuario.update_usuario(usuario_avatar)
                 return {"message":"imagen actualizada"},201
             else:
