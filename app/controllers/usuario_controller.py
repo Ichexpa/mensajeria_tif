@@ -84,35 +84,33 @@ class UsuarioController:
     
     @classmethod
     def actualizar_avatar(cls):
-        #no funciona este metodo
-        ruta_usuario_avatares=Config.USUARIO_AVATARES
-        usuario_buscado = Usuario(nickname = session.get("nickname"),email=session.get("email"))
-        usuario_result = Usuario.get_usuario(usuario_buscado)
+        ruta_avatar_imagenes="http://127.0.0.1:5000/assets/avatares/"
+        nombre_imagen=None
+        usuario_sesion = Usuario(nickname = session.get("nickname"),email=session.get("email"))
+        usuario = Usuario.get_usuario(usuario_sesion)
         
-        """ usuario_id = session["id_usuario"] """
-        """ usuario = Usuario.get_usuario_id(Usuario(id_usuario = usuario_id)) """
-        """ usuario = Usuario(id_usuario = usuario_id) """
-
-        if "profile_image" in request.files:
-            profile_image = request.files["profile_image"]
-            
-            if profile_image.filename != "":
-                path =os.path.join(ruta_usuario_avatares, profile_image.filename)
-                profile_image.save(path)
-                
-                """ usuario_result.avatar = Config.USUARIO_AVATARES
-            
-                
-                Usuario.update_usuario(usuario_result) """
-                
-                return {"message":"Avatar actualizado correctamente."},200
+        if usuario is not None:
+            #Compruebo que en el form se haya mandando un valor con identficador "imagen"
+            if "profile_imagen" in request.files:
+                #OBTENGO LA IMAGEN
+                profile_imagen=request.files["profile_imagen"]
+                #DESPUES MEJORAR PARA QUE SEA UNICA
+                #OBTENGO EL NOMBRE
+                nombre_imagen=profile_imagen.filename
+                if(nombre_imagen != ""):
+                    #CREO UNA RUTA TOMANDO COMO BASE LA QUE ESTA EN CONFIG UNIENDOLA CON EL NOMBRE DE LA IMAGEN ENVIADA
+                    ruta_archivo = os.path.join(ruta_avatar_imagenes, nombre_imagen)
+                    #GUARDO LA IMAGEN EN LA RUTA ANTERIOR
+                    profile_imagen.save(ruta_archivo)
+                else:
+                    nombre_imagen=None
+                usuario_avatar = Usuario(avatar = ruta_archivo,id_usuario = usuario.id_usuario)
+                Usuario.update_usuario(usuario_avatar)
+                return {"message":"imagen actualizada"},201
             else:
-                raise UserDataError("No hay archivo seleccionado")
-        else:
-            raise UserDataError("No exite la fila")
-        #raise UserNotFound("no se encontro usuario")         
+                raise UserDataError("La llave no se encuentra en el request")
+        raise UserNotFound("usuario no encontrado")
                     
-    
     
     @classmethod
     def delete_usuario(cls):
