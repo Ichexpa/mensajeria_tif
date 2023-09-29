@@ -106,11 +106,15 @@ class Usuario:
         allowed_columns = {'email', 'constrasenia', 'nombre',
                            'apellido', 'fecha_nac',
                            'avatar', 'nickname'}
+        
         query_parts = []
         params = []
         for key, value in usuario.__dict__.items():
             if key in allowed_columns and value is not None:
                 query_parts.append(f"{key} = %s")
+                params.append(value)
+            elif key == "contrasenia" and value is not None:
+                query_parts.append("constrasenia = %s")
                 params.append(value)
         params.append(usuario.id_usuario)
 

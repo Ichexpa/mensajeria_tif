@@ -16,3 +16,8 @@ class Config:
     STATIC_FOLDER = "static_folder/"
 
     SERVIDOR_IMAGENES= STATIC_FOLDER + "servidor_imagenes/"
+    
+    USUARIO_AVATARES = STATIC_FOLDER + "usuario_avatares/"
+
+if __name__ == "__main__":
+    print(Config.USUARIO_AVATARES)
